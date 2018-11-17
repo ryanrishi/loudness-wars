@@ -1,6 +1,6 @@
 import csv
 
-START_YEAR = 1950
+START_YEAR = 1972
 END_YEAR = 2015
 
 # year --> [ top song, second top song, etc. ]
@@ -9,11 +9,11 @@ billboard_by_year = {}
 
 def load_billboard_charts():
     for year in xrange(START_YEAR, END_YEAR + 1):
-        with open('billboard/%s.csv' % year, 'rU') as file:
-            reader = csv.reader(file)
+        with open('billboard/%s.csv' % year, 'rU') as f:
+            reader = csv.DictReader(f)
 
-            # skip header
-            next(reader)
+            # # skip header
+            # next(reader)
 
             billboard_by_year[year] = list(reader)
 
