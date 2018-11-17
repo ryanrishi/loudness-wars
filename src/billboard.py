@@ -1,6 +1,6 @@
 import csv
 
-START_YEAR = 1972
+START_YEAR = 1950
 END_YEAR = 2015
 
 # year --> [ top song, second top song, etc. ]
