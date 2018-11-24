@@ -3,6 +3,10 @@ from billboard import billboard_by_year
 from fuzzywuzzy import fuzz
 from writer import write_results_to_file
 
+# disable SSL warnings
+import requests
+requests.packages.urllib3.disable_warnings()
+
 
 def get_loudness_for_track(track_id):
     results = get_track_analysis(track_id)
