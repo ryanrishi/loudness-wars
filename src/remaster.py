@@ -1,6 +1,8 @@
-from client import get_track_info
+from client import get_track_info, get_track_analysis
 from billboard import billboard_by_year
 from fuzzywuzzy import fuzz
+from writer import format_row_for_remaster_csv
+import json
 
 # disable SSL warnings
 import requests
@@ -19,7 +21,6 @@ def find_remaster(results, name, artist, year):
     found = None
     found_name_ratio = 0
     found_artist_ratio = 0
-    print "find_remaster(%d, %s, %s, %s)" % (len(results), name, artist, year)
     for track in results["tracks"]["items"]:
         name_ratio = fuzz.ratio(track["name"], name)
         for found_artist in track["artists"]:
@@ -31,31 +32,40 @@ def find_remaster(results, name, artist, year):
     return found
 
 
-for year, tracks in billboard_by_year.iteritems():
-    for track in tracks:
-        song = "%s remaster" % track['Song Title']
-        artist = track['Artist']
-        results = get_track_info(song, artist)
-        remaster = find_remaster(results, song, artist, year)
-        import json
-        print json.dumps(remaster)
-        if remaster:
-            print "=== remaster: %s" % remaster["name"]
-            print "=== loudness: %d" % remaster["loudness"]
-        else:
-            print "No remaster found for %s by %s" % (song, artist)
 
+if DEBUG:
+    print "DEBUG is True"
+    song = "Hey Jude"
+    artist = "The Beatles"
+    year = 1968
 
-# if __name__ == "__main__":
-#     song = "Hey Jude"
-#     artist = "The Beatles"
-#     year = 1968
-# 
-#     # original release date: 26 August 1968
-#     # remaster 2015 https://open.spotify.com/album/5ju5Ouzan3QwXqQt1Tihbh
-# 
-#     song = "%s remastered" % song
-# 
-#     results = get_track_info(song, artist)
-#     remaster = find_remaster(results, song, artist, year)
-#     print remaster
+    # original release date: 26 August 1968
+    # remaster 2015 https://open.spotify.com/album/5ju5Ouzan3QwXqQt1Tihbh
+    
+    # Another good one is Jailhouse Rock - 2003 Sony Remaster
+
+    song = "%s remastered" % song
+    
+    print "Song to find:\t%s" % song
+
+    results = get_track_info(song, artist)
+    remaster = find_remaster(results, song, artist, year)
+    print "Remaster:\t%s by %s" % (remaster["name"], remaster["artists"][0]["name"])
+    analysis = get_track_analysis(remaster["id"])
+    print "Loudness:\t%d" % analysis["loudness"]
+    formatted = format_row_for_remaster_csv(remaster, analysis["loudness"], is_remaster=True)
+    print json.dumps(formatted, indent=True, sort_keys=True)
+else:
+    remasters = []
+    for year, tracks in billboard_by_year.iteritems():
+        print 'year: %s' % year
+        for track in tracks:
+            song = "%s remaster" % track['Song Title']
+            artist = track['Artist']
+            results = get_track_info(song, artist)
+            remaster = find_remaster(results, song, artist, year)
+            if remaster:
+                print "Remaster:\t%s" % remaster["name"]
+                analysis = get_track_analysis(remaster["id"])
+                print "Loudness:\t%d" % analysis["loudness"]
+                # TODO append to CSV file. Store both original and remastered
