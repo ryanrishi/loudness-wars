@@ -46,11 +46,12 @@ for year, tracks in billboard_by_year.iteritems():
             print "Could not find track %s by %s" % (song, artist)
         else:
             print "Searched for %s - %s" % (song, artist)
-            print "Found %s - %s" % (found["name"], ' / '.join([artist["name"] for artist in found["artists"]]))
+            print "Found %s - %s" % (found["name"], ' / '.join([a["name"] for a in found["artists"]]))
             loudness = get_loudness_for_track(found["id"])
             print "Loudness: %d" % loudness
             print track
             track["Loudness"] = loudness
+            track["id"] = found["id"]
 
     filename = "%s-results.csv" % year
     write_results_to_file(filename, tracks)
