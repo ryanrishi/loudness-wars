@@ -1,20 +1,17 @@
+import glob
+import re
 import csv
 
-START_YEAR = 1950
-END_YEAR = 2015
 
 # year --> [ top song, second top song, etc. ]
 billboard_by_year = {}
 
 
 def load_billboard_charts():
-    for year in xrange(START_YEAR, END_YEAR + 1):
-        with open('billboard/%s.csv' % year, 'rU') as f:
+    for file in glob.glob('billboard/*.csv'):
+        with open(file, 'rU') as f:
             reader = csv.DictReader(f)
-
-            # # skip header
-            # next(reader)
-
+            year = re.search('(\d+)', file).group(0)
             billboard_by_year[year] = list(reader)
 
 
