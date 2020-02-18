@@ -28,7 +28,7 @@ with open(OUT_FILE, 'w') as results_file:
     fieldnames = ['Year', 'Position', 'Song Title', 'Artist', 'Loudness']
     writer = csv.DictWriter(results_file, fieldnames=fieldnames)
     writer.writeheader()
-    
+
     files = glob.glob('%s*-results.csv' % RESULTS_DIR)
 
     for file in glob.glob('%s*-results.csv' % RESULTS_DIR):
@@ -37,7 +37,8 @@ with open(OUT_FILE, 'w') as results_file:
             print "Processing %s" % year
             reader = csv.DictReader(f)
             for row in reader:
-                row['Year'] = year
-                writer.writerow(row)
+                if row['Loudness']:
+                    row['Year'] = year
+                    writer.writerow(row)
 
     print "Done"

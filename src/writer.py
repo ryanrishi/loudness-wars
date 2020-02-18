@@ -1,20 +1,21 @@
 import csv
+import logging
+logger = logging.getLogger(__name__)
 
 PATH_PREFIX = 'out/'
 
 
-def format_row_for_remaster_csv(track_info, loudness, is_remaster=False):
+def format_row_for_remaster_csv(track_info, audio_analysis):
     # loudness comes from audio_analysis, everything else if from track
     # song, artist, release_date (OG/remaster), remaster (y/n), loudness, track_id
     row = {
         "song": track_info["name"],
         "artist": ', '.join(artist["name"] for artist in track_info["artists"]),
         "release_date": track_info["album"]["release_date"],
-        "is_remaster": is_remaster,
-        "loudness": loudness,
+        "loudness": audio_analysis["loudness"],
         "track_id": track_info["id"]
     }
-    
+
     return row
 
 
@@ -29,7 +30,7 @@ def write_results_to_file(filename, results):
 
 
 if __name__ == "__main__":
-    print "Testing CSV writer"
+    logger.debug("Testing CSV writer")
     results = [
         {
             "Position": 1,
@@ -44,7 +45,7 @@ if __name__ == "__main__":
             "Loudness": -8
         }
     ]
-    
+
     filename = "test.csv"
     write_results_to_file(filename, results)
-    print "Wrote results to %s" % filename
+    logger.info("Wrote results to %s" % filename)

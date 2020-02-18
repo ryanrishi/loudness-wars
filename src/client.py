@@ -1,7 +1,9 @@
 from spotipy.oauth2 import SpotifyClientCredentials
 import spotipy
 from config import config
+import logging
 
+logger = logging.getLogger(__name__)
 
 CLIENT_ID = config.get("spotify", "CLIENT_ID")
 CLIENT_SECRET = config.get("spotify", "CLIENT_SECRET")
@@ -23,5 +25,4 @@ def get_track_analysis(track_id):
 
 if __name__ == "__main__":
     results = sp.search('Creep Radiohead')
-    import pprint
-    print pprint.pprint(results['tracks']['items'])
+    logger.info(results['tracks']['items'])

@@ -1,7 +1,9 @@
 import glob
 import re
 import csv
+import logging
 
+logger = logging.getLogger(__name__)
 
 # year --> [ top song, second top song, etc. ]
 billboard_by_year = {}
@@ -17,6 +19,5 @@ def load_billboard_charts():
 
 load_billboard_charts()
 
-
 if __name__ == '__main__':
-    print billboard_by_year
+    logger.info(billboard_by_year)
