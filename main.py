@@ -40,7 +40,6 @@ if __name__ == "__main__":
         for song in input:
             track = get_track(song)
             if track:
-                logger.info("here")
                 logger.info("Found track {} for {} - {}".format(track["id"], song["title"], song["artist"]))
                 with open("{}/{}.json".format(TRACKS_DIR, track["id"]), "w") as outfile:
                     outfile.write(json.dumps(track))
