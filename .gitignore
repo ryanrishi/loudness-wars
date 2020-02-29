@@ -1,5 +1,9 @@
 config
 .idea/
 venv
+*pycache*
 
-out/
+out/*.csv
+out/*.xlsx
+out/analysis/*.json
+out/tracks/*.json
