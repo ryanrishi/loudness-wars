@@ -25,7 +25,7 @@ TRACKS_DIR = "{}/tracks".format(OUT_DIR)
 FOUND_FILE = "{}/found".format(OUT_DIR)
 
 
-def get_track(track):
+def find_track(track):
     '''
         Parameters:
             - track.title - the title of the track
@@ -47,7 +47,7 @@ if __name__ == "__main__":
                     logger.debug("{} already found".format(track_key))
                     continue
 
-            track = get_track(song)
+            track = find_track(song)
             if track:
                 logger.debug("Found track {} for {}".format(track["id"], track_key))
                 with open("{}/{}.json".format(TRACKS_DIR, track["id"]), "w") as outfile:
