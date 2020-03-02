@@ -3,12 +3,13 @@ import logging
 import coloredlogs
 import csv
 import json
+import os
 from fuzzywuzzy import fuzz
 
-coloredlogs.install()
 logging.basicConfig()
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
+coloredlogs.install(logger=logger)
 
 """
 TODO
@@ -25,7 +26,9 @@ INFILE = "in.csv"
 """
 OUT_DIR = "out"
 TRACKS_DIR = "{}/tracks".format(OUT_DIR)
-FOUND_FILE = "{}/found".format(OUT_DIR)
+TRACK_FOUND_FILE = "{}/found".format(TRACKS_DIR)
+ANALYSIS_DIR = "{}/analysis".format(OUT_DIR)
+ANALYSIS_FOUND_FILE = "{}/found".format(ANALYSIS_DIR)
 
 
 def find_track(song):
@@ -59,7 +62,7 @@ if __name__ == "__main__":
         for song in input:
             # check if we've already found the track (based on title and artist name)
             track_key = "{} - {}".format(song["title"], song["artist"])
-            with open(FOUND_FILE, "r") as f:
+            with open(TRACK_FOUND_FILE, "r") as f:
                 if track_key in f.read():
                     logger.debug("{} already found".format(track_key))
                     continue
@@ -71,14 +74,33 @@ if __name__ == "__main__":
                     outfile.write(json.dumps(track))
 
                 # mark as found
-                with open(FOUND_FILE, "a") as f:
+                with open(TRACK_FOUND_FILE, "a") as f:
                     f.write("{}\n".format(track_key))
             else:
                 logger.warning("Could not find track for {}".format(track_key))
 
     logger.info("Getting analysis for tracks")
 
-    # store track_id
-    # (maybe) sanity check / confirm "is this your track?" / add some sort of confidence score
+    for filename in os.listdir(TRACKS_DIR):
+        if filename.endswith(".json"):
+            track_id = os.path.splitext(filename)[0]
+
+            # check if we already have the analysis
+            with open(ANALYSIS_FOUND_FILE, "r") as f:
+                if track_id in f.read():
+                    logger.debug("Analysis for {} already found".format(track_id))
+                    continue
+
+            analysis = spotify.audio_analysis(track_id)
+            if analysis:
+                logger.debug("Found analysis for track {}".format(track_id))
+                with open("{}/{}.json".format(ANALYSIS_DIR, track_id), "w") as f:
+                    f.write(json.dumps(analysis))
+
+                # mark as found
+                with open(ANALYSIS_FOUND_FILE, "a") as f:
+                    f.write("{}\n".format(track_id))
+            else:
+                logger.warning("Could not get analysis for {}").format(track_id)
 
     # for each track, get audio analysis
