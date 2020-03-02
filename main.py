@@ -20,7 +20,9 @@ INFILE = "in.csv"
        |- 12345.json
        |- 67890.json
 """
-TRACKS_DIR = "out/tracks"
+OUT_DIR = "out"
+TRACKS_DIR = "{}/tracks".format(OUT_DIR)
+FOUND_FILE = "{}/found".format(OUT_DIR)
 
 
 def get_track(track):
@@ -38,11 +40,22 @@ if __name__ == "__main__":
     with open(INFILE, "r") as f:
         input = csv.DictReader(f)
         for song in input:
+            # check if we've already found the track (based on title and artist name)
+            track_key = "{} - {}".format(song["title"], song["artist"])
+            with open(FOUND_FILE, "r") as f:
+                if track_key in f.read():
+                    logger.debug("{} already found".format(track_key))
+                    continue
+
             track = get_track(song)
             if track:
-                logger.info("Found track {} for {} - {}".format(track["id"], song["title"], song["artist"]))
+                logger.debug("Found track {} for {}".format(track["id"], track_key))
                 with open("{}/{}.json".format(TRACKS_DIR, track["id"]), "w") as outfile:
                     outfile.write(json.dumps(track))
+
+                # mark as found
+                with open(FOUND_FILE, "a") as f:
+                    f.write("{}\n".format(track_key))
 
     # store track_id
     # (maybe) sanity check / confirm "is this your track?" / add some sort of confidence score
