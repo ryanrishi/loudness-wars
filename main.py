@@ -2,6 +2,7 @@ from loudness_wars.client import spotify
 import logging
 import csv
 import json
+from fuzzywuzzy import fuzz
 
 logging.basicConfig()
 logger = logging.getLogger(__name__)
@@ -25,15 +26,28 @@ TRACKS_DIR = "{}/tracks".format(OUT_DIR)
 FOUND_FILE = "{}/found".format(OUT_DIR)
 
 
-def find_track(track):
+def find_track(song):
     '''
         Parameters:
-            - track.title - the title of the track
-            - track.artist - the artist of the track
+            - song.title - the title of the track
+            - song.artist - the artist of the track
     '''
-    results = spotify.search("{} {}".format(track["title"], track["artist"]))
-    if results["tracks"] and results["tracks"]["items"]:
-        return results["tracks"]["items"][0]     # TODO make sure this gets the correct track
+    results = spotify.search("{} {}".format(song["title"], song["artist"]))
+
+    found = None
+    found_name_ratio = 0
+    found_artist_ratio = 0
+
+    for track in results["tracks"]["items"]:
+        name_ratio = fuzz.ratio(track["name"], song["title"])
+        for artist in track["artists"]:
+            artist_ratio = fuzz.ratio(artist["name"], song["artist"])
+            if artist_ratio > found_artist_ratio and name_ratio > found_name_ratio:
+                found = track
+                found_name_ratio = name_ratio
+                found_artist_ratio = artist_ratio
+
+    return found
 
 
 if __name__ == "__main__":
