@@ -1,9 +1,11 @@
 from loudness_wars.client import spotify
 import logging
+import coloredlogs
 import csv
 import json
 from fuzzywuzzy import fuzz
 
+coloredlogs.install()
 logging.basicConfig()
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
@@ -51,6 +53,7 @@ def find_track(song):
 
 
 if __name__ == "__main__":
+    found_tracks = 0
     with open(INFILE, "r") as f:
         input = csv.DictReader(f)
         for song in input:
@@ -70,6 +73,10 @@ if __name__ == "__main__":
                 # mark as found
                 with open(FOUND_FILE, "a") as f:
                     f.write("{}\n".format(track_key))
+            else:
+                logger.warning("Could not find track for {}".format(track_key))
+
+    logger.info("Getting analysis for tracks")
 
     # store track_id
     # (maybe) sanity check / confirm "is this your track?" / add some sort of confidence score
