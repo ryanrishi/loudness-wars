@@ -1,1 +1,101 @@
-Position,Artist,Song Title1,Elton John,Candle In The Wind 1997 / Something About The Way You Look Tonight2,Jewel,Foolish Games / You Were Meant For Me3,Puff Daddy and Faith Evans,I'll Be Missing You4,Toni Braxton,Un-Break My Heart5,Puff Daddy,Can't Nobody Hold Me Down6,R. Kelly,I Believe I Can Fly7,En Vogue,Don't Let Go (Love)8,Mark Morrison,Return Of The Mack9,LeAnn Rimes,How Do I Live10,Spice Girls,Wannabe11,Backstreet Boys,Quit Playing Games (With My Heart)12,Hanson,MMMBop13,Monica,For You I Will14,Usher,You Make Me Wanna...15,Meredith Brooks,Bitch16,Keith Sweat,Nobody17,Third Eye Blind,Semi-Charmed Life18,Duncan Sheik,Barely Breathing19,Az Yet feat. Peter Cetera,Hard To Say I'm Sorry20,Notorious B.I.G.,Mo Money Mo Problems21,Verve Pipe,The Freshmen22,Savage Garden,I Want You23,BLACKstreet feat. Dr. Dre,No Diggity24,Rome,I Belong To You (Every Time I See Your Face)25,Notorious B.I.G.,Hypnotize26,Babyface,Every Time I Close My Eyes27,Dru Hill,In My Bed28,Spice Girls,Say You'll Be There29,Robyn,Do You Know (What It Takes)30,Boyz II Men,4 Seasons Of Loneliness31,Changing Faces,G.H.E.T.T.O.U.T.32,Mariah Carey,Honey33,Whitney Houston,I Believe In You And Me34,Freaknasty,Da' Dip35,Spice Girls,2 Become 136,Sister Hazel,All For You37,112,Cupid38,Paula Cole,Where Have All The Cowboys Gone?39,Shawn Colvin,Sunny Came Home40,Tim McGraw and Faith Hill,It's Your Love41,Gina G,Ooh Aah... Just A Little Bit42,Merril Bainbridge,Mouth43,Allure feat. 112,All Cried Out44,New Edition,I'm Still In Love With You45,98 Degrees,Invisible Man46,Lil' Kim,Not Tonight47,Bone Thugs-N-Harmony,Look Into My Eyes48,702,Get It Together49,Celine Dion,All By Myself50,Celine Dion,It's All Coming Back To Me Now51,Somethin' For The People,My Love Is The Shhh!52,No Mercy,Where Do You Go53,Barbra Streisand and Bryan Adams,I Finally Found Someone54,Foxy Brown feat. Jay-Z,I'll Be55,Sheryl Crow,If It Makes You Happy56,Dru Hill,Never Make A Promise57,Journey,When You Love A Woman58,Magoo And Timbaland,Up Jumps Da Boogie59,Toni Braxton,I Don't Want To / I Love Me Some Him60,Sheryl Crow,Everyday Is A Winding Road61,Mc Lyte,Cold Rock A Party62,Ginuwine,Pony63,Sarah McLachlan,Building A Mystery64,Donna Lewis,I Love You Always Forever65,White Town,Your Woman66,Coolio,C U When U Get There67,Eric Clapton,Change The World68,B-Rock and The Bizz,My Baby Daddy69,Chumbawamba,Tubthumping70,R. Kelly,Gotham City71,Az Yet,Last Night72,Various Artists,ESPN Presents The Jock Jam73,Heavy D,Big Daddy74,Total,What About Us75,Scarface,Smile76,Montell Jordan,What's On Tonight77,Bruce Springsteen,Secret Garden78,Aaliyah,The One I Gave My Heart To79,Seal,Fly Like An Eagle80,Lil' Kim,No Time81,Luscious Jackson,Naked Eye82,Los Del Rio,Macarena (Bayside Boys Mix)83,Erykah Badu,On and On84,Joe,Don't Wanna Be A Player85,Warren G,I Shot The Sheriff86,Brian McKnight feat. Mase,You Should Be Mine (Don't Waste Your Time)87,Madonna,Don't Cry For Me Argentina88,SWV,Someone89,Michael Bolton,Go The Distance90,Real McCoy,One More Time91,Next,Butta Love92,Mr. President,Coco Jamboo93,Keith Sweat,Twisted94,Aqua,Barbie Girl95,Cranberries,When You're Gone / Free To Decide96,DJ Kool,Let Me Clear My Throat97,Blackout Allstars,I Like It98,Toni Braxton,You're Makin' Me High / Let It Flow99,Madonna,You Must Love Me100,Ray J,Let It Go
+rank,artist,song
+1,Daniel Powter,Bad Day
+2,Sean Paul,Temperature
+3,Nelly Furtado Featuring Timbaland,Promiscuous
+4,James Blunt,You're Beautiful
+5,Shakira Featuring Wyclef Jean,Hips Don't Lie
+6,Natasha Bedingfield,Unwritten
+7,Gnarls Barkley,Crazy
+8,Chamillionaire Featuring Krayzie Bone,Ridin'
+9,Justin Timberlake,SexyBack
+10,Beyonce Featuring Slim Thug,Check On It
+11,Mary J. Blige,Be Without You
+12,"Nelly Featuring Paul Wall, Ali & Gipp",Grillz
+13,The Fray,Over My Head (Cable Car)
+14,Cassie,Me & U
+15,The Pussycat Dolls Featuring Snoop Dogg,Buttons
+16,Chris Brown,Run It!
+17,Ne-Yo,So Sick
+18,Yung Joc,It's Goin' Down
+19,Rihanna,SOS
+20,Panic! At The Disco,I Write Sins Not Tragedies
+21,The All-American Rejects,Move Along
+22,Fergie,London Bridge
+23,Red Hot Chili Peppers,Dani California
+24,Lil Jon Featuring E-40 & Sean Paul Of The YoungBloodZ,Snap Yo Fingers
+25,Dem Franchize Boyz Featuring Lil Peanut & Charlay,"Lean Wit It, Rock Wit It"
+26,Rascal Flatts,What Hurts The Most
+27,The Fray,How To Save A Life
+28,Rihanna,Unfaithful
+29,Snow Patrol,Chasing Cars
+30,Hinder,Lips Of An Angel
+31,Cascada,Everytime We Touch
+32,Christina Aguilera,Ain't No Other Man
+33,Fall Out Boy,"Dance, Dance"
+34,Kanye West Featuring Jamie Foxx,Gold Digger
+35,Ludacris Featuring Pharrell,Money Maker
+36,Bubba Sparxxx Featuring Ying Yang Twins & Mr. ColliPark,Ms. New Booty
+37,Sean Paul Featuring Keyshia Cole,(When You Gonna) Give It Up To Me
+38,Nickelback,Photograph
+39,Kelly Clarkson,Because Of You
+40,The Pussycat Dolls,Stickwitu
+41,T-Pain Featuring Mike Jones,I'm N Luv (Wit A Stripper)
+42,The Black Eyed Peas,My Humps
+43,Fort Minor Featuring Holly Brook,Where'd You Go
+44,Chris Brown,Yo (Excuse Me Miss)
+45,Kelly Clarkson,Walk Away
+46,D4L,Laffy Taffy
+47,T.I.,What You Know
+48,The All-American Rejects,Dirty Little Secret
+49,Nickelback,Savin' Me
+50,Mariah Carey,Don't Forget About Us
+51,Ne-Yo,Sexy Love
+52,E-40 Featuring T-Pain & Kandi Girl,U And Dat
+53,Nickelback,Far Away
+54,Nick Lachey,What's Left Of Me
+55,Field Mob Featuring Ciara,So What
+56,Cherish Featuring Sean Paul Of The YoungBloodZ,Do It To It
+57,KT Tunstall,Black Horse & The Cherry Tree
+58,Juelz Santana,There It Go! (The Whistle Song)
+59,Young Dro Featuring T.I.,Shoulder Lean
+60,Jamie Foxx Featuring Ludacris,Unpredictable
+61,Justin Timberlake Featuring T.I.,My Love
+62,Eminem Featuring Nate Dogg,Shake That
+63,Chingy Featuring Tyrese,Pullin' Me Back
+64,Kelis Featuring Too $hort,Bossy
+65,Jibbs,Chain Hang Low
+66,Akon Featuring Eminem,Smack That
+67,Ray J,One Wish
+68,Fall Out Boy,"Sugar, We're Goin' Down"
+69,Chris Brown Featuring Lil Wayne,Gimme That
+70,Yung Joc Featuring Brandy 'Ms. B.' Hambrick,I Know You See It
+71,Bon Jovi,Who Says You Can't Go Home
+72,JoJo,Too Little Too Late
+73,Busta Rhymes,Touch It
+74,Daddy Yankee,Rompe
+75,Beyonce Featuring Jay Z,Deja Vu
+76,Rascal Flatts,Life Is A Highway
+77,Evanescence,Call Me When You're Sober
+78,Carrie Underwood,"Jesus, Take The Wheel"
+79,Danity Kane,Show Stopper
+80,Ciara Featuring Chamillionaire,Get Up
+81,Sean Paul,We Be Burnin'
+82,Blue October,Hate Me
+83,Lifehouse,You And Me
+84,The Pussycat Dolls Featuring will.i.am,Beep
+85,"Dem Franchize Boyz Featuring Jermaine Dupri, Da Brat & Bow Wow",I Think They Like Me
+86,Chris Brown,Say Goodbye
+87,John Mayer,Waiting On The World To Change
+88,Young Jeezy Featuring Akon,Soul Survivor
+89,The Black Eyed Peas,Pump It
+90,Eminem,When I'm Gone
+91,Madonna,Hung Up
+92,Three 6 Mafia Featuring Young Buck & Eightball & MJG,Stay Fly
+93,Keyshia Cole,Love
+94,Ne-Yo,When You're Mad
+95,T.I.,Why You Wanna
+96,P!nk,Stupid Girls
+97,Gorillaz,Feel Good Inc
+98,T-Pain,I'm Sprung
+99,Taylor Hicks,Do I Make You Proud
+100,Teddy Geiger,For You I Will (Confidence)

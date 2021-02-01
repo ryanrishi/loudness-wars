@@ -2,6 +2,7 @@ appnope==0.1.0
 astroid==2.3.3
 autopep8==1.5
 backports.shutil-get-terminal-size==1.0.0
+beautifulsoup4==4.9.3
 certifi==2018.10.15
 chardet==3.0.4
 coloredlogs==14.0
@@ -35,12 +36,13 @@ pylint==2.4.4
 python-jsonrpc-server==0.3.4
 python-language-server==0.31.8
 python-Levenshtein==0.12.0
-requests==2.20.1
+requests==2.25.1
 rope==0.16.0
 scandir==1.9.0
 simplegeneric==0.8.1
 six==1.14.0
 snowballstemmer==2.0.0
+soupsieve==2.1
 spotipy==2.4.4
 traitlets==4.3.2
 typed-ast==1.4.1
