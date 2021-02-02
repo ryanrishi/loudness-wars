@@ -10,8 +10,8 @@ CREATE TABLE IF NOT EXISTS artist (
 );
 
 CREATE TABLE IF NOT EXISTS track_artist_join (
-  track_id INTEGER NOT NULL,
-  artist_id INTEGER NOT NULL,
+  track_id TEXT NOT NULL,
+  artist_id TEXT NOT NULL,
   FOREIGN KEY (track_id) REFERENCES track(id),
   FOREIGN KEY (artist_id) REFERENCES artist(id)
   UNIQUE (track_id, artist_id)

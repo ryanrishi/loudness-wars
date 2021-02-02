@@ -1,65 +1,15 @@
 from client import search_for_track
-from fuzzywuzzy import fuzz
 import logging
-from glob import glob
-from os import path
-import csv
-from csv import DictReader
 import sqlite3
+from db import get_db_connection
+from billboard import mark_track_as_found, find_billboard_chart_track, find_tracks_by_year
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
-#   for each billboard chart
-#       read chart csv
-#       search for track (song + artist)
-#       filter results for best match
-#           - artist name
-#           - release year
-#           - song name
-#       save spotify track id
-
-#   for each track
-#       get analysis for spotify track id
-#       save analysis
-
-
-
-
-# def get_loudness_for_track(track_id):
-#     results = get_track_analysis(track_id)
-#     return results["loudness"]
-#
-#
-# def find_track_in_results(results, name, artist):
-#     """
-#         iterate over tracks, fuzzy matching on track title and artist
-#         choose track with highest ratio for name/artist
-#         TOOD consider weighting by release date, in case there are rereleases/remasters
-#     """
-#     found = None
-#     found_name_ratio = 0
-#     found_artist_ratio = 0
-#     for track in results["tracks"]["items"]:
-#         name_ratio = fuzz.ratio(track["name"], name)
-#         for found_artist in track["artists"]:
-#             artist_ratio = fuzz.ratio(found_artist["name"], artist)
-#             if (artist_ratio > found_artist_ratio) and (name_ratio > found_name_ratio):
-#                 found = track
-#                 found_name_ratio = name_ratio
-#                 found_artist_ratio = artist_ratio
-#     return found
-
-def _get_db_connection():
-    try:
-        conn = sqlite3.connect(path.join(path.dirname(__file__), "db/spotify.db"))
-        return conn
-    except Exception as e:
-        logger.error(f"Error creating database connection: {e}")
-
 
 def add_track_to_database(track):
-    conn = _get_db_connection()
+    conn = get_db_connection()
     cursor = conn.cursor()
 
     # check if track already exists in database
@@ -75,7 +25,7 @@ def add_track_to_database(track):
 
 
 def add_artist_to_database(artist):
-    conn = _get_db_connection()
+    conn = get_db_connection()
     cursor = conn.cursor()
 
     # check if artist already exists in database
@@ -91,7 +41,7 @@ def add_artist_to_database(artist):
 
 
 def create_track_artist_joins(track):
-    conn = _get_db_connection()
+    conn = get_db_connection()
     cursor = conn.cursor()
 
     for artist in track["artists"]:
@@ -104,53 +54,36 @@ def create_track_artist_joins(track):
             logger.debug(f"Failed to create track_artist_join records for {track['name']} - {artist['name']}")
 
 
+def find_track(track_name, artist_name):
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    cursor.execute('''
+        SELECT * FROM track
+            INNER JOIN track_artist_join taj on track.id = taj.track_id
+            INNER JOIN artist on artist.id = taj.artist_id
+        WHERE TRUE
+            AND track.name = ?
+            AND artist.name = ?
+    ''', (track_name, artist_name))
+
+    found_track = cursor.fetchone()
+    if not found_track:
+        logger.info(f"Track not found: {track_name} by {artist_name}")
+
+    return found_track
+
+
 if __name__ == "__main__":
-    unfound_tracks = []
+    for track in find_tracks_by_year(2020, 2020 + 1):
+        if track["found"]:
+            logger.debug(f"Track is already marked as found; not reprocessing: {track['song']} by {track['artist']} ({track['year']})")
+            continue
 
-    for year in range(2020, 2020 + 1):
-        with open(f"{path.dirname(path.dirname(__file__))}/billboard/{year}.csv", "r") as f:
-            reader = DictReader(f)
-            for row in reader:
-                track = search_for_track(row['song'], row['artist'], year)
-                if track:
-                    for artist in track["artists"]:
-                        add_artist_to_database(artist)
-                    add_track_to_database(track)
-                    create_track_artist_joins(track)
-                else:
-                    unfound_tracks.append((row['song'], row['artist'], year))
-
-    if unfound_tracks:
-        logger.warning(f"Could not find {len(unfound_tracks)} tracks")
-        unfound_tracks_file = path.join(path.dirname(path.dirname(__file__)), "out/not-found.csv")
-        with open(unfound_tracks_file, "w") as f:
-            writer = csv.writer(f)
-            writer.writerow(['song', 'artist', 'year'])
-
-            for track in unfound_tracks:
-                writer.writerow(track)
-
-        logger.info(f"Wrote unfound tracks to {unfound_tracks_file}")
-
-
-    # for year, tracks in billboard_by_year.iteritems():
-    #     logger.info("=== Starting year %s ===" % year)
-    #     for track in tracks:
-    #         rank = track['Position']
-    #         artist = track['Artist']
-    #         song = track['Song Title']
-    #         logger.debug("Getting track info for %s by %s" % (song, artist))
-    #         results = get_track_info(song, artist)
-    #         found = find_track_in_results(results, song, artist)
-    #         if not found:
-    #             logger.warn("Could not find track %s by %s" % (song, artist))
-    #         else:
-    #             logger.debug("Searched for %s - %s" % (song, artist))
-    #             logger.debug("Found %s - %s" % (found["name"], ' / '.join([a["name"] for a in found["artists"]])))
-    #             loudness = get_loudness_for_track(found["id"])
-    #             logger.debug("Loudness: %d" % loudness)
-    #             track["Loudness"] = loudness
-    #             track["id"] = found["id"]
-    #
-    #     filename = "%s-results.csv" % year
-    #     write_results_to_file(filename, tracks)
+        spotify_track = search_for_track(track["song"], track["artist"], track["year"])
+        if spotify_track:
+            for artist in spotify_track["artists"]:
+                add_artist_to_database(spotify_track)
+            add_track_to_database(spotify_track)
+            create_track_artist_joins(spotify_track)
+            mark_track_as_found(track['id'])

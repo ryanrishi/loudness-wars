@@ -1,12 +1,10 @@
-import glob
-import re
-import csv
 import logging
 import requests
 import argparse
 from bs4 import BeautifulSoup
 from time import sleep
 from os import path
+from db import get_db_connection, dict_factory
 
 logging.basicConfig()
 logger = logging.getLogger(__name__)
@@ -15,12 +13,6 @@ logger.setLevel(logging.INFO)
 
 def scrape_billboard_charts(start_year, end_year):
     for year in range(start_year, end_year + 1):
-        outfile_path = get_csv_outfile(year)
-        logger.info(outfile_path)
-        if path.exists(outfile_path):
-            logger.warning(f"{outfile_path} exists, skipping")
-            continue
-
         success = False
         while not success:
             logger.info(f"Getting Billboard chart for {year}")
@@ -44,21 +36,67 @@ def process_chart_html(chart_html: str, year: int):
     soup = BeautifulSoup(chart_html, "html.parser")
     year_end_chart_items = soup.find_all(class_="ye-chart-item")
 
-    fieldnames = ['rank', 'artist', 'song']
-    with open(get_csv_outfile(year), "w") as f:
-        writer = csv.DictWriter(f, fieldnames=fieldnames)
-        writer.writeheader()
-
-        for chart_item in year_end_chart_items:
-            row = {
-                "rank": int(chart_item.find(class_="ye-chart-item__rank").text),
-                "artist": chart_item.find(class_="ye-chart-item__artist").text.strip(),
-                "song": chart_item.find(class_="ye-chart-item__title").text.strip()
-            }
-
-            writer.writerow(row)
+    for chart_item in year_end_chart_items:
+        track_name = chart_item.find(class_="ye-chart-item__title").text.strip()
+        artist_name = chart_item.find(class_="ye-chart-item__artist").text.strip()
+        rank = int(chart_item.find(class_="ye-chart-item__rank").text)
+        save_song(track_name, artist_name, year, rank)
 
     logger.info(f"Processed Billboard chart for {year}")
+
+
+def save_song(track_name, artist_name, year, rank):
+    conn = get_db_connection("billboard")
+    cursor = conn.cursor()
+
+    cursor.execute('''
+            SELECT * FROM chart WHERE song = ? AND artist = ? AND year = ? AND position = ?
+        ''', (track_name, artist_name, year, rank))
+
+    found_track = cursor.fetchone()
+
+    if found_track:
+        logger.info(f"Track already exists in database: {track_name} by {artist_name} ({year})")
+
+    if found_track is None:
+        cursor.execute('''
+                INSERT INTO chart (song, artist, year, position) VALUES (?, ?, ?, ?)
+            ''', (track_name, artist_name, year, rank))
+        conn.commit()
+
+
+def find_billboard_chart_track(track_name, artist_name, year):
+    conn = get_db_connection("billboard")
+    cursor = conn.cursor()
+
+    cursor.execute("SELECT * FROM chart WHERE song = ? AND artist = ? AND year = ?", (track_name, artist_name, year))
+    return cursor.fetchone()
+
+
+def find_tracks_by_year(start_year, end_year):
+    """
+        Returns a list of tracks between the following years. Start year is inclusive, end year is exclusive.
+    """
+    conn = get_db_connection("billboard")
+    conn.row_factory = dict_factory
+    cursor = conn.cursor()
+
+    cursor.execute('''
+            SELECT * FROM chart WHERE year >= ? AND year < ?
+        ''', (start_year, end_year))
+
+    return cursor.fetchall()
+
+
+def mark_track_as_found(track_id):
+    conn = get_db_connection("billboard")
+    cursor = conn.cursor()
+
+    cursor.execute('''
+            UPDATE chart SET found = ? WHERE id = ?
+        ''', (1, track_id))
+    conn.commit()
+    logger.debug(f"Marked track as found: {track_id}")
 
 
 def get_csv_outfile(year: int) -> str:
