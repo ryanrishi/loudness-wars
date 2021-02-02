@@ -7,3 +7,6 @@ out/*.csv
 out/*.xlsx
 out/analysis/*.json
 out/tracks/*.json
+
+*.db
+
