@@ -48,13 +48,14 @@ def search_for_track(track_name, artist_name: str, year):
         for track in results["tracks"]["items"]:
             message = f"{track['name']} by {', '.join(artist['name'] for artist in track['artists'])} ({track['album']['release_date']})"
             choices_dict[message] = track["id"]
-        # choices = [f"{track['name']} by {', '.join(artist['name'] for artist in track['artists'])} ({track['album']['release_date']})" for track in results["tracks"]["items"]]
+        none_of_the_above = "None of the above"
         questions = [
-            inquirer.List("track", message=f"Which track best matches {track_name} by {artist_name} ({year})?", choices=choices_dict.keys())
+            inquirer.List("track", message=f"Which track best matches {track_name} by {artist_name} ({year})?", choices=list(choices_dict.keys()) + [none_of_the_above])
         ]
         chosen = inquirer.prompt(questions)
-        # logger.info(f"chosen:\t{chosen}")
-        # logger.info(f"choices_dict:\t{choices_dict}")
+        if chosen["track"] == none_of_the_above:
+            return
+
         chosen_track_id = choices_dict[chosen["track"]]
         return list(track for track in results["tracks"]["items"] if track["id"] == chosen_track_id)[0]
     else:
@@ -64,12 +65,13 @@ def search_for_track(track_name, artist_name: str, year):
         # fuzzy match on track name + artist name?
         # filter by release date closest to and prior to year?
 
+
 def get_track_info(name, artist):
     query = '%s %s' % (name, artist)
     return sp.search(q=query)
 
 
-def get_track_analysis(track_id):
+def get_audio_analysis(track_id):
     return sp.audio_analysis(track_id)
 
 
