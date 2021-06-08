@@ -18,7 +18,7 @@ def get_primary_artist_name(artist_name):
     features = ("Featuring", "With", "x", "X", "&")
     primary_artist = artist_name
     for feature in features:
-        if feature in primary_artist:
+        if f" {feature} " in primary_artist:
             primary_artist = artist_name.split(feature)[0].strip()
 
     if primary_artist != artist_name:
