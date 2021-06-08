@@ -16,3 +16,9 @@ CREATE TABLE IF NOT EXISTS track_artist_join (
   FOREIGN KEY (artist_id) REFERENCES artist(id)
   UNIQUE (track_id, artist_id)
 );
+
+CREATE TABLE IF NOT EXISTS audio_analysis (
+  track_id TEXT NOT NULL,
+  analysis BLOB NOT NULL,
+  FOREIGN KEY (track_id) REFERENCES track(id)
+);
