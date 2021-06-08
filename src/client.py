@@ -33,7 +33,7 @@ def search_for_track(track_name, artist_name: str, year):
 
     query = f"{track_name} {artist_name}"
     results = sp.search(query)
-    if results["tracks"]:
+    if results["tracks"] and results["tracks"]["items"]:
         for track in results["tracks"]["items"]:
             # TODO better matching on things like "Life Is Good (feat. Drake)", when query is "Life Is Good"
             # TODO Señorita → Senorita - or just clean up input file to have ñ
