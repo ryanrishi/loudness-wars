@@ -1,4 +1,4 @@
-from client import search_for_track
+from client import search_for_track, get_audio_analysis
 import logging
 import sqlite3
 from db import get_db_connection
@@ -72,6 +72,30 @@ def find_track(track_name, artist_name):
         logger.info(f"Track not found: {track_name} by {artist_name}")
 
     return found_track
+
+
+def process_audio_analysis_for_track(track_id):
+    analysis = get_audio_analysis(track_id)
+
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    cursor.execute("INSERT INTO audio_analysis (track_id, analysis) VALUES (?, ?)", (track_id, json.dumps(analysis)))
+    conn.commit()
+    logger.info(f"Processed audio analysis for track {track_id}")
+
+
+def find_tracks_without_analysis():
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    cursor.execute('''
+        SELECT id FROM track
+            LEFT JOIN audio_analysis aa ON aa.track_id = track.id
+        WHERE aa.track_id IS NULL
+    ''')
+
+    return [track[0] for track in cursor.fetchall()]
 
 
 if __name__ == "__main__":
