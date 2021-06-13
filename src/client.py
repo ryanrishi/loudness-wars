@@ -3,6 +3,7 @@ import spotipy
 from config import config
 import logging
 import inquirer
+import datetime
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
@@ -15,6 +16,7 @@ sp = spotipy.Spotify(client_credentials_manager=client_credentials_manager)
 
 
 def get_primary_artist_name(artist_name):
+    # TODO this is not working for groups like "Earth, Wind, & Fire", "Kool & The Gang"
     features = ("Featuring", "With", "x", "X", "&")
     primary_artist = artist_name
     for feature in features:
@@ -38,16 +40,26 @@ def search_for_track(track_name, artist_name: str, year):
             # TODO better matching on things like "Life Is Good (feat. Drake)", when query is "Life Is Good"
             # TODO Señorita → Senorita - or just clean up input file to have ñ
             if track["name"].lower() == track_name.lower() or track_name.lower() in track["name"].lower():
+                if len(track["artists"]) == 0:
+                    return track
+
                 for artist in track["artists"]:
-                    if artist["name"].lower() == artist_name.lower():
-                        logger.info(f"For {track_name} by {artist_name}, found {track['name']} by {track['artists'][0]['name']}")
+                    if get_primary_artist_name(artist["name"].lower()) == artist_name.lower():
+                        logger.info(f"For {track_name} by {artist_name}, found {track['name']} by {artist['name']}")
                         return track
 
         # prompt to choose a track
         choices_dict = {}
         for track in results["tracks"]["items"]:
+            if not is_possible_year_match(track, year):
+                continue
             message = f"{track['name']} by {', '.join(artist['name'] for artist in track['artists'])} ({track['album']['release_date']})"
             choices_dict[message] = track["id"]
+
+        if not choices_dict:
+            logger.warning(f"Found no tracks for {track_name} by {artist_name}")
+            return
+
         none_of_the_above = "None of the above"
         questions = [
             inquirer.List("track", message=f"Which track best matches {track_name} by {artist_name} ({year})?", choices=list(choices_dict.keys()) + [none_of_the_above])
@@ -65,10 +77,38 @@ def search_for_track(track_name, artist_name: str, year):
         # fuzzy match on track name + artist name?
         # filter by release date closest to and prior to year?
 
+def is_possible_year_match(track, year):
+    """
+        Returns true if the track was released by the time it was on the Billboard chart
+        Plus some fuzzy matching
+    """
+    release_date = track["album"]["release_date"]
+    release_date_precision = track["album"]["release_date_precision"]
+    if release_date_precision == 'day':
+        release_date_format = '%Y-%m-%d'
+    elif release_date_precision == 'month':
+        release_date_format = '%Y-%m'
+    elif release_date_precision == 'year':
+        release_date_format = '%Y'
+    else:
+        logger.warn(f"Could not determine release date format: f{release_date}, precision is f{release_date_precision}")
+
+    release_date = datetime.datetime.strptime(release_date, release_date_format)
+    end_of_billboard_year = datetime.datetime(year, 12, 31)
+
+    return release_date < end_of_billboard_year
 
 def get_track_info(name, artist):
     query = '%s %s' % (name, artist)
     return sp.search(q=query)
+
+
+def get_artist(id):
+    return sp.artist(id)
+
+
+def get_track(id):
+    return sp.track(id)
 
 
 def get_audio_analysis(track_id):
