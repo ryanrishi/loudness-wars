@@ -107,7 +107,7 @@ if __name__ == "__main__":
         spotify_track = search_for_track(track["song"], track["artist"], track["year"])
         if spotify_track:
             for artist in spotify_track["artists"]:
-                add_artist_to_database(spotify_track)
+                add_artist_to_database(artist)
             add_track_to_database(spotify_track)
             create_track_artist_joins(spotify_track)
             mark_track_as_found(track['id'])
