@@ -3,7 +3,11 @@ import logging
 import sqlite3
 from db import get_db_connection
 from billboard import mark_track_as_found, find_billboard_chart_track, find_tracks_by_year
+import json
+import coloredlogs
+from concurrent.futures import ThreadPoolExecutor
 
+coloredlogs.install()
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
@@ -99,7 +103,7 @@ def find_tracks_without_analysis():
 
 
 if __name__ == "__main__":
-    for track in find_tracks_by_year(2020, 2020 + 1):
+    for track in find_tracks_by_year(1980, 1981):
         if track["found"]:
             logger.debug(f"Track is already marked as found; not reprocessing: {track['song']} by {track['artist']} ({track['year']})")
             continue
@@ -111,3 +115,8 @@ if __name__ == "__main__":
             add_track_to_database(spotify_track)
             create_track_artist_joins(spotify_track)
             mark_track_as_found(track['id'])
+
+    tracks_without_analysis = find_tracks_without_analysis()
+    pool = ThreadPoolExecutor()
+    for track in tracks_without_analysis:
+        pool.submit(process_audio_analysis_for_track, track)
