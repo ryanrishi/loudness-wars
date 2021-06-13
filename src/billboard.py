@@ -5,7 +5,9 @@ from bs4 import BeautifulSoup
 from time import sleep
 from os import path
 from db import get_db_connection, dict_factory
+import coloredlogs
 
+coloredlogs.install()
 logging.basicConfig()
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
@@ -23,10 +25,8 @@ def scrape_billboard_charts(start_year, end_year):
                 success = True
             elif response.status_code == 429:
                 # oops sorry Billboard
-                logger.info("Received 429 from Billboard")
-
                 delay = int(response.headers['Retry-After']) if response.headers['Retry-After'] is not None else 60
-                logger.debug(f"Sleeping for {delay} seconds")
+                logger.info(f"Received 429 from Billboard - sleeping for {delay} seconds")
                 sleep(delay)
             else:
                 logger.error(f"Unhandled status code: {response.status_code}")
@@ -56,13 +56,17 @@ def save_song(track_name, artist_name, year, rank):
     found_track = cursor.fetchone()
 
     if found_track:
-        logger.info(f"Track already exists in database: {track_name} by {artist_name} ({year})")
+        logger.debug(f"Track already exists in database: {track_name} by {artist_name} ({year})")
 
     if found_track is None:
-        cursor.execute('''
-                INSERT INTO chart (song, artist, year, position) VALUES (?, ?, ?, ?)
-            ''', (track_name, artist_name, year, rank))
-        conn.commit()
+        try:
+            cursor.execute('''
+                    INSERT INTO chart (song, artist, year, position) VALUES (?, ?, ?, ?)
+                ''', (track_name, artist_name, year, rank))
+            conn.commit()
+        except Exception as e:
+            logger.error(f"Error inserting chart track: {track_name} by {artist_name} ({year})")
+            logger.error(e)
 
 
 def find_billboard_chart_track(track_name, artist_name, year):
