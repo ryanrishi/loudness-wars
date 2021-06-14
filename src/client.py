@@ -39,9 +39,15 @@ def search_for_track(track_name, artist_name: str, year):
         for track in results["tracks"]["items"]:
             # TODO better matching on things like "Life Is Good (feat. Drake)", when query is "Life Is Good"
             # TODO Señorita → Senorita - or just clean up input file to have ñ
+            # TODO match Beyoncé from Beyonce
+            # TODO match Kesha from Ke$ha
             if track["name"].lower() == track_name.lower() or track_name.lower() in track["name"].lower():
                 if len(track["artists"]) == 0:
                     return track
+
+                if "remaster" in track["name"].lower() or "remaster" in track["album"]["name"].lower():
+                    # Spotify keeps the original release date for remasters
+                    continue
 
                 for artist in track["artists"]:
                     if get_primary_artist_name(artist["name"].lower()) == artist_name.lower():
@@ -53,6 +59,12 @@ def search_for_track(track_name, artist_name: str, year):
         for track in results["tracks"]["items"]:
             if not is_possible_year_match(track, year):
                 continue
+
+            # TODO filter out remasters not matching this pattern
+            # Michael Jackson's "Thriller 25 Deluxe Edition" was released in 2008 but Spotify has 1983. Only note of 2008 is in copyright
+            if "remaster" in track["name"].lower() or "remaster" in track["album"]["name"].lower():
+                continue
+
             message = f"{track['name']} by {', '.join(artist['name'] for artist in track['artists'])} ({track['album']['release_date']})"
             choices_dict[message] = track["id"]
 
