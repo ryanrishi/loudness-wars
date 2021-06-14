@@ -44,6 +44,22 @@ def add_artist_to_database(artist):
         logger.debug(f"Artist already exists in database; skipping: {artist['id']} ({artist['name']})")
 
 
+def add_album_to_database(album):
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    cursor.execute("SELECT * FROM album WHERE id = ?", (album["id"],))
+
+    if not cursor.fetchone():
+        cursor.execute("""
+            INSERT INTO album (id, name, release_date, release_date_precision) VALUES (?, ?, ?, ?)
+        """, (album["id"], album["name"], album["release_date"], album["release_date_precision"]))
+        conn.commit()
+        logger.info(f"Added album to database: {album['id']} ({album['name']})")
+    else:
+        logger.debug(f"Album already exists in database; skipping: {album['id']} ({album['name']})")
+
+
 def create_track_artist_joins(track):
     conn = get_db_connection()
     cursor = conn.cursor()
@@ -56,6 +72,19 @@ def create_track_artist_joins(track):
         except sqlite3.IntegrityError:
             # this will happen if we re-run the application from the beginning
             logger.debug(f"Failed to create track_artist_join records for {track['name']} - {artist['name']}")
+
+
+def create_track_album_join(track, album):
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    try:
+        cursor.execute("INSERT INTO track_album_join (track_id, album_id) VALUES (?, ?)", (track["id"], album["id"]))
+        conn.commit()
+        logger.info(f"Created track_album_join record for {track['name']} - {album['name']}")
+    except sqlite3.IntegrityError:
+        # this is expected if the backfill script is run multiple times
+        logger.debug(f"Failed to create track_album_join records for {track['name']} - {album['name']}")
 
 
 def find_track(track_name, artist_name):
@@ -113,6 +142,7 @@ if __name__ == "__main__":
             for artist in spotify_track["artists"]:
                 add_artist_to_database(artist)
             add_track_to_database(spotify_track)
+            add_album_to_database(spotify_track["album"])
             create_track_artist_joins(spotify_track)
             mark_track_as_found(track['id'])
 
