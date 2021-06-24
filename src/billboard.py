@@ -6,6 +6,7 @@ from time import sleep
 from os import path
 from db import get_db_connection, dict_factory
 import coloredlogs
+from csv import DictReader
 
 coloredlogs.install()
 logging.basicConfig()
@@ -15,6 +16,13 @@ logger.setLevel(logging.INFO)
 
 def scrape_billboard_charts(start_year, end_year):
     for year in range(start_year, end_year + 1):
+        if 1991 <= year <= 2005:
+            # As of 2021-06-23, Billboard's year-end charts for 1991 - 2005 are incorrect. They are all the chart for 2006.
+            # I emailed them to correct it, and for now I'll use data from when I scraped these charts years ago:
+            # https://github.com/ryanrishi/loudness-wars/commit/be0349aab29cd734ce2d2eff63fe92d5f6bb941c
+            logger.warning(f"Billboard data is inaccurate for 1991 - 2005. Reading {year} from CSV")
+            load_billboard_csv(year)
+            continue
         success = False
         while not success:
             logger.info(f"Getting Billboard chart for {year}")
@@ -45,7 +53,7 @@ def process_chart_html(chart_html: str, year: int):
     logger.info(f"Processed Billboard chart for {year}")
 
 
-def save_song(track_name, artist_name, year, rank):
+def save_song(track_name: str, artist_name: str, year: int, rank: int):
     conn = get_db_connection("billboard")
     cursor = conn.cursor()
 
@@ -69,7 +77,7 @@ def save_song(track_name, artist_name, year, rank):
             logger.error(e)
 
 
-def find_billboard_chart_track(track_name, artist_name, year):
+def find_billboard_chart_track(track_name: str, artist_name: str, year: int):
     conn = get_db_connection("billboard")
     cursor = conn.cursor()
 
@@ -77,7 +85,7 @@ def find_billboard_chart_track(track_name, artist_name, year):
     return cursor.fetchone()
 
 
-def find_tracks_by_year(start_year, end_year):
+def find_tracks_by_year(start_year: int, end_year: int):
     """
         Returns a list of tracks between the following years. Start year is inclusive, end year is exclusive.
     """
@@ -103,14 +111,17 @@ def mark_track_as_found(track_id):
     logger.debug(f"Marked track as found: {track_id}")
 
 
-def get_csv_outfile(year: int) -> str:
-    return path.join(path.dirname(path.dirname(__file__)), f"billboard/{year}.csv")
+def load_billboard_csv(year: int):
+    with open(path.join(path.dirname(path.dirname(__file__)), f"billboard/{year}.csv"), 'r') as f:
+        reader = DictReader(f)
+        for row in reader:
+            save_song(row["song"], row["artist"], year, int(row["rank"]))
 
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Scrape Billboard charts.')
-    parser.add_argument('--start-year', help='The start year', default=1970)    # Billboard doesn't have charts < 1970
-    parser.add_argument('--end-year', help='The end year', default=2020)
+    parser.add_argument('--start-year', default=1970, type=int)  # Billboard doesn't have charts < 1970
+    parser.add_argument('--end-year', default=2020, type=int)
 
     args = parser.parse_args()
     scrape_billboard_charts(args.start_year, args.end_year)
