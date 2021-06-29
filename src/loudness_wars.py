@@ -19,7 +19,7 @@ def add_track_to_database(track):
     # check if track already exists in database
     cursor.execute("SELECT * FROM track where id = ?", (track["id"],))
 
-    if not cursor.fetchall():
+    if not cursor.fetchone():
         # add track to database
         cursor.execute("INSERT INTO TRACK (id, name) VALUES (?, ?)", (track["id"], track["name"]))
         conn.commit()
