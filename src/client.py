@@ -29,7 +29,7 @@ def get_primary_artist_name(artist_name):
     return primary_artist
 
 
-def search_for_track(track_name, artist_name: str, year):
+def search_for_track(track_name, artist_name: str, year, skip_imperfect_matches=False):
     # TODO be smarter about this - use featured artist to match if multiple artists returned from Spotify
     artist_name = get_primary_artist_name(artist_name)
 
@@ -53,6 +53,9 @@ def search_for_track(track_name, artist_name: str, year):
                     if get_primary_artist_name(artist["name"].lower()) == artist_name.lower():
                         logger.info(f"For {track_name} by {artist_name}, found {track['name']} by {artist['name']}")
                         return track
+
+        if skip_imperfect_matches:
+            return
 
         # prompt to choose a track
         choices_dict = {}

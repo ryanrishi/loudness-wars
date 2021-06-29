@@ -137,7 +137,7 @@ if __name__ == "__main__":
             logger.debug(f"Track is already marked as found; not reprocessing: {track['song']} by {track['artist']} ({track['year']})")
             continue
 
-        spotify_track = search_for_track(track["song"], track["artist"], track["year"])
+        spotify_track = search_for_track(track["song"], track["artist"], track["year"], True)
         if spotify_track:
             for artist in spotify_track["artists"]:
                 add_artist_to_database(artist)
