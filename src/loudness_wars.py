@@ -143,6 +143,7 @@ if __name__ == "__main__":
                 add_artist_to_database(artist)
             add_track_to_database(spotify_track)
             add_album_to_database(spotify_track["album"])
+            create_track_album_join(spotify_track, spotify_track["album"])
             create_track_artist_joins(spotify_track)
             mark_track_as_found(track['id'])
 
