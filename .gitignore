@@ -1,5 +1,8 @@
-.RData
-.RHistory
 config
 .idea/
-.Rproj.user
+venv
+*pycache*
+
+out
+*.db
+

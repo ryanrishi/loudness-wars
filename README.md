@@ -1,5 +1,33 @@
-Loudness Wars
+loudness wars
 ===
-This repository contains the code for a personal project I'm working on. The loudness wars refers to the decreasing dynamic range of the music industry. The overall loudness of popular music is increasing because record labels are adding increasing amounts dynamic compression.
 
-Feel free to clone this repo and see for yourself—just feed loudness_wars.py a CSV file track titles and artists, and the program will output a CSV file with the overall loudness (among other attributes) of each song.
+The [loudness wars](https://ryanrishi.com/projects/loudness-wars) refers to the increasing loudness of recorded music. The overall loudness of popular music is increasing because producers are adding increasing amounts dynamic compression.
+
+![Loudness Wars](chart.png)
+
+# Usage
+## `virtualenv`
+```sh
+$ virtualenv venv
+$ source venv/bin/activate
+```
+
+## `pip`
+```sh
+$ pip install -r requirements.txt
+```
+
+## config
+Register for a Spotify developer account [here](https://developer.spotify.com/dashboard). Get the `client_id` and `client_secret` and put them in a file named `config` (see `example.config` for an example config).
+
+## Run it
+Seed the Billboard database
+```sh
+$ python billboard.py
+````
+
+Scrape track information from Spotify
+```sh
+$ python loudness_wars.py
+```
+
