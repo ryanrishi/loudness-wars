@@ -79,7 +79,7 @@ def search_for_track(track_name, artist_name: str, year, skip_imperfect_matches=
                 "legacy edition",
                 "bonus edition",
                 "special edition",
-                "reissue"
+                "reissue",
                 "the essential",
                 "20th century masters",
                 "the complete recordings",
