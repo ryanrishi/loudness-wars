@@ -2,7 +2,7 @@ from client import search_for_track, get_audio_analysis
 import logging
 import sqlite3
 from db import get_db_connection
-from billboard import mark_track_as_found, find_billboard_chart_track, find_tracks_by_year
+from .billboard import mark_track_as_found, find_tracks_by_year
 import json
 import coloredlogs
 from concurrent.futures import ThreadPoolExecutor

@@ -13,11 +13,10 @@ coloredlogs.install()
 
 def generate_csv():
     conn = get_db_connection()
-    # conn.row_factory = sqlite3.Row
     cursor = conn.cursor()
 
     cursor.execute('''
-        SELECT track.id id, track.name track_name, group_concat(artist.name, ', ') artist, album.name album, album.release_date, album.release_date_precision, json_extract(aa.analysis, '$.track.loudness') loudness FROM TRACK
+        SELECT track.id, track.name track_name, group_concat(artist.name, ', ') artist, album.name album, album.release_date, album.release_date_precision, json_extract(aa.analysis, '$.track.loudness') loudness FROM TRACK
         JOIN track_artist_join ON track_artist_join.track_id = track.id
         JOIN artist ON track_artist_join.artist_id = artist.id
         JOIN track_album_join ON track_album_join.track_id = track.id
@@ -40,14 +39,4 @@ def generate_csv():
 
 
 if __name__ == "__main__":
-    """
-    Output CSV
-    - track_id
-    - track_name
-    - artist_name
-    - album_name
-    - release_date
-    - release_date_precision (year, month, day)
-    - loudness
-    """
     generate_csv()
