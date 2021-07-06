@@ -41,13 +41,94 @@ def search_for_track(track_name, artist_name: str, year, skip_imperfect_matches=
             # TODO Señorita → Senorita - or just clean up input file to have ñ
             # TODO match Beyoncé from Beyonce
             # TODO match Kesha from Ke$ha
-            if track["name"].lower() == track_name.lower() or track_name.lower() in track["name"].lower():
-                if len(track["artists"]) == 0:
-                    return track
 
-                if "remaster" in track["name"].lower() or "remaster" in track["album"]["name"].lower():
-                    # Spotify keeps the original release date for remasters
+            # TODO make this regex
+            blocklist = {
+                "remaster",
+                "best of",
+                "various artists",
+                "remaster",
+                "deluxe",
+                "60s",
+                "70s",
+                "80s",
+                "90s",
+                "60's",
+                "70's",
+                "80's",
+                "90's",
+                "seventies",
+                "live at",
+                "live from",
+                "live in",
+                "(live",
+                " - live",
+                "acoustic",
+                "greatest hits",
+                "greatest classic rock songs",
+                "summer viral hits",
+                "anthology",
+                "expanded edition",
+                " collection",
+                "collector",
+                " anniversary ",
+                "rerecord",
+                "re-record",
+                "premium edition",
+                "limited edition"
+                "legacy edition",
+                "bonus edition",
+                "special edition",
+                "reissue"
+                "the essential",
+                "20th century masters",
+                "the complete recordings",
+                "the complete albums",
+                "radio edit",
+                "radio mix",
+                "radio version",
+                "the essential",
+                "single version",
+                "single edit",
+                "single mix",
+                "single remix",
+                "extended mix",
+                "extended version",
+                "extended remix",
+                "billboard chart hit",
+                "one hit wonder",
+                "love songs",
+                "compilation",
+                "love romantic pop songs",  # Marvin Gaye
+                # /\d{4} (re)mix/
+                # /remixed \d{4}/   # a lot of John Lennon / George Harrison
+                "24 hours of r&b",
+                "now that's what i call",   # blast from the past
+                # hey mickey - not sure why Spotify thinks this came out in 2020
+                "from doo-wop to hip-hop",
+                "rhino hi-five",
+                # /best \d+ - \d+/
+                "(reissue)",
+                # /vol.? \d+/
+                "feelgood adult contemporary",
+                "valentines day"
+            }
+
+            if track["name"].lower() == track_name.lower() or track_name.lower() in track["name"].lower():
+                if any([
+                    word in track["name"].lower() or
+                    word in track["album"]["name"].lower() or
+                    any([word in artist["name"] for artist in track["artists"]])
+                    for word in blocklist
+                ]):
+                    # Spotify keeps the original release date for remasters, deluxe, etc.
                     continue
+
+                if [artist == "Various Artists" for artist in track["album"]["artists"]]:
+                    continue
+
+                if len(track["artists"]) == 0 and artist_name.lower() in track["artists"]["name"]:
+                    return track
 
                 for artist in track["artists"]:
                     if get_primary_artist_name(artist["name"].lower()) == artist_name.lower():
