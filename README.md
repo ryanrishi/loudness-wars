@@ -27,7 +27,7 @@ Register for a Spotify developer account [here](https://developer.spotify.com/da
 ## Run it
 Add some songs (track title / artist) to `in.csv`.
 ```sh
-$ python main.py
+$ python loudness_wars.py
 ```
 
 

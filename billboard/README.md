@@ -4,6 +4,3 @@ Billboard charts from years prior to 1970 were scraped from http://www.bobborst.
 NOTE: for 1950-1955, there are only the top 30 songs on that site.
 
 Billboard charts from 1970 on were scraped from https://www.billboard.com/charts/year-end/{year}/hot-100-songs.
-
-
-
