@@ -132,7 +132,7 @@ def find_tracks_without_analysis():
 
 
 if __name__ == "__main__":
-    for track in find_tracks_by_year(1980, 1981):
+    for track in find_tracks_by_year(1970, 2021):
         if track["found"]:
             logger.debug(f"Track is already marked as found; not reprocessing: {track['song']} by {track['artist']} ({track['year']})")
             continue
