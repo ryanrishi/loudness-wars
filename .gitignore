@@ -4,5 +4,7 @@ venv
 *pycache*
 
 out
-*.db
+# *.db - using LFS instead
+
+**/*.ipynb_checkpoints
 

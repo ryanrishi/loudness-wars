@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="UTF-8"?><sqlb_project><db path="/Users/rrishi/git/ryanrishi/loudness-wars/src/db/spotify.db" readonly="0" foreign_keys="1" case_sensitive_like="0" temp_store="0" wal_autocheckpoint="1000" synchronous="2"/><attached/><window><main_tabs open="structure browser pragmas query" current="3"/></window><tab_structure><column_width id="0" width="300"/><column_width id="1" width="0"/><column_width id="2" width="100"/><column_width id="3" width="2015"/><column_width id="4" width="0"/><expanded_item id="0" parent="1"/><expanded_item id="1" parent="1"/><expanded_item id="2" parent="1"/><expanded_item id="3" parent="1"/></tab_structure><tab_browse><current_table name="4,5:mainalbum"/><default_encoding codec=""/><browse_table_settings><table schema="main" name="album" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="1" value="166"/><column index="2" value="300"/><column index="3" value="75"/><column index="4" value="128"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table></browse_table_settings></tab_browse><tab_sql><sql name="SQL 1">-- find remasters
+select track.id, track.name, artist.id, artist.name, album.id, album.name, album.release_date from album
+join track_album_join taj on taj.album_id = album.id
+join track on taj.track_id = track.id
+join track_artist_join on track_artist_join.track_id = track.id
+join artist on track_artist_join.artist_id = artist.id
+where album.name like '%remaster%' or track.name like '%remaster%';
+
+-- select group_concat(id) from track where name like '%remaster%';
+-- 7iN1s7xHE4ifF5povM6A48,0wb21I1NV5uVUolRXIqlJF,14vDlv40PzpXKBo6qmht6M,7GqIDx2QVGOpd4r1fZaUUW,1oht5GevPN9t1T3kG1m1GO,6zV8IpLvw0tkRSVCFQJB1y,3cq6mwsjgygbwRIi9wVPGv,1Q1b8eVkUPGlpSArl8JAVw,2XKW8CH8nRZH9cF2DNjBHN,4OJFkrRQqol4FsPesF8eu4,5uRkew0DtfAQmv0oEYNwFF,0YveezON7jpiaHA8fnUHxN,1PehfITh0TTRx3LkDdV4h3,608xszaAxVh4m7NcKJiAbF,5MLLuLqPdUlx8bfKtdkLwO,7wJpqjqk8QbHpCakY1ZacY,3KPwt1LBpt1jVSHz8GXERo,75Nlnd9AJ4CYrLXgWGsuTF,7GqWnsKhMtEW0nzki5o0d8,5DEy8wVNCdJdAGNsOWxmVQ,3AA2SafseoJo431Pee120g,1oRvLqwJowH9JU0uO1iVzA,3uiMBldZ07pW0ySHDX5gzE,7tFiyTwD0nx5a1eklYtX2J,2cWHN0WK52RGAWHgaDamUA,4JRem7xHp2l0kmUvt9zCKu,4fbwTO3DJ2qryMddov9RbB,3tGhRLgcCP6SIZU3tbGl7l,4OKf7CcYuw5H2HptkcKxcP,62NJcC5piTuieIFiDZxiz1,3XcjIvaZVUFAIdIYZqY9bd,0VV8wkOM4w78A2OHZOTzNP,72Z17vmmeQKAg8bptWvpVG,5Wj1rJnCLpMHdLaxsFtJLs,6yLIqXX9edg1x0HZS7cZEv,4IRHwIZHzlHT1FQpRa5RdE,6YLWRvxvC4VbFTuNRHeaDU,5BCPL5mWm6UqI4atl18kVm,6gTrbqZnyljwXdYQTyBkSx,40riOy7x9W7GXjyGp4pjAv,2TcwEYyydQuEMJwdmSgVLD,36xEjbl8DtevPJgw6i9IuY,0ofHAoxe9vBkTCp2UQIavz,3CPeWqqaHR0hmyfsWhMJQs,6cFZ4PLC19taNlpl9pbGMf,4xh7W7tlNMIczFhupCPniY,1TsekOo0xMKvIgKK7U6zaQ,07NrCEN3egNvw8td2LxqJO,5Vrczz39CvlD3OGCa6utoA,3hJLKtTpgct9Y9wKww0BiR,73JqQIGZUZxCVfY54RSpCH,34D6mvDTAPypm92EPs8Rxa,21IypW8aMJ2iUhzrXe3hKO,7Kszjzps0xbQXyo1pO4KfE,3w3rLh6wmne91BS2rwgcog,2wYKNcoqKW4IEcllj42xz1,6mHOcVtsHLMuesJkswc0GZ,3fn87ydk7ihtvVr8EwjYvr,71GMl3Q7U4JnrTqI9kfcoN,7ooheiWgbyNtGOBTPbjNoq,3OZ40egQbNWeTe0BnR2QKa,4FLEKG82bHeT2olTM8E2Fy,4RS9PmtHQe7I0o5fEeweOY,35ItUJlMtjOQW3SSiTCrrw,7v5rsCN3LhX9XaIlWyTdx3,1QaJWSCk3UMKLotnPCIHh1,3Ug96zKa29P3vICEEcYajZ,2bzgKuK3pVez40qUvo8sYr,5IATbFZds3cbOx8YxuMuko,1RaUxP6LHVAgbmLOn2naLl,02BsTeJE4q5gWOTt58ur5U,2YOwVfcUTRjNpcLny4UC4r,0v0XYK0pLgsPiq5u4FKHaw,0iINibMKtoS8duvexsqnm5,5y0YreEOnQiKFAnCrcFIXz,0GGxVTb0UwDwdaKNjBdCn3,3FD0RyHoYObYJkBIDGra4W,3RJ81z1sPLeWEFuCfGaCLC,66LhCsc06aTa2Ig7iYPDSP,6IXSfTzUjEsKc9iOvDkIx4,57JVGBtBLCfHw2muk5416J,32fKHW6Eac4yBXn9WY7Aic,52KvuGmgcgRdrLMXOtda0E,4fKhRRYn7F5shZItjJkPJU,07TnWCHrFkvF61GzJuLVt0,1BZMMt9H0TheQGWQy44KmO,3LMe4h7CrPLJrViTVzfDot,4PFhHd7DsNg0ke9Nmlxms5,01PjrDX13iIjeHc5iJZmb3,4Wd9pEtEnZNDjgiswGOpJb,1TfqLAPs4K3s2rJMoCokcS,39lSeqnyjZJejRuaREfyLL,3ix6K4wZY29bCujrSznwFZ,6y9VZNRczyKeQihebHSMJ8,4N1dFbXmRng8qJ3KdJrbLr,0ZfZaT7NByalxa6bct5G67,4YwbSZaYeYja8Umyt222Qf,2QSUyofqpGDCo026OPiTBQ,3ZXcjz3A5vNsR5dA1e6ITl,56KqaFSGTb7ifpt16t5Y1N,7HF88mJXq8DpotZohoW2mo,5Ei9o2fHEnfHb84YrPuz4v,6n4t5iMFjHmA3ErCOLT9O8,173r99cYlRApif8GLPrLqt,5x5FUXjs53WbPuTwT6WD8d,63CHa6rmamv9OsehkRD8oz,7N3PAbqfTjSEU1edb2tY8j,2wSAWEYUHkt92X4SBAPqZE,4sz1Ng2Cgidfqqiy0pNL6R,78RIER8V6EhrqVPOBi2GYa,3JpaL6FMH9kjVWMA1mTmRl,3Tows9RnoAq9CmMJaII2cO,6ucfemTqUh5NjU161g4LtV,2zFdsAIk9r2Mi7Lmm1w3sM,0SO4oJBmDNjniJwjlHaIhO,7t6CAWplijBj4sdl0q3z0e,56SnVQVuJuqnYA6rLdcg32,31QuJZfFiMk1uOawow8ejS,2DEEMhTiUMvkiHFdXkrKfI,08rR0CdyUAzJy3053xCPPG,74tXc7WOWxEDZahXcyPG9D,1JLn8RhQzHz3qDqsChcmBl,6fkvIT9KFKxO8poBeKfaEf,0VMGij4wSGBM5pSTcqjxeD,36lkJSDyMEZoWTqtRj8Q8q,4qM461TqtpnP4GLRIXwEnW,4N5HyZ1PlXuP6sryIa4hOQ,2ZIzyHDYsXIHUojfr6bAbO,1lJZSsMoWEbrgaY6CxPMf8,3CCBwpqjdar1PG6HHulmD0,3QyxB6fNUFNSLyjiwkycOY,6UHXo9jMVXvLM5cNMaN0X2,2yzPBlE5UXK2sqvnNM9QQ0,1yg7fwwYmx9DQ2TdXUmfpJ,4AUS8KNz7zX8XFu9L38GT0,3gE2Af7Tgd1iZOO1xbTqoh,0xpBr84T3FTm9j4D1MdPtk,1dMilrhgON9TIGPVdWG2dX,638poNnWFgzt7UJBQ5SWtM,2s6wCS3vDZFPY9NOTlPXJZ,1qOU8KzFifXE9YrgjVwYvc,1NAf61L4b3jFgLJhThTQ8B,6twIBPybEvGydyNzNz89FT,2fytePz8UsbUr8n33QBEcm,4P0uyibZjcXZLVeNOHBd8Q,3dn6qXlHYAQpOqMTWxkGOR,4CoSCPlKNrWli7E5kFtbcl,5lWFrW5T3JtxVCLDb7etPu,3qmYlsTbC9CD9SGoVmaEDa,6IuOHB4yZcU935GKqT1K6I,0hOA8SoraNo2ZP1amtVYnY,0HEmnAUT8PHznIAAmVXqFJ,3OeUlriM0EZHdWleJtjoVr,5932kbyNt445gDTT2chRUS,0IhUdJRoolbYeEMPL59XPm,0PdM2a6oIjqepoEfcJo0RO,1kiNatIrwDusOZfR29W0LJ,5KXKhCfPNS4342ly8tTf6w,0L0T4tMAaGqLgIVj1MOj9t,3Dfy8YIxq89i84t108TvMi,0sKlV58cODrjxGFOyf9IXY,2nzPzkGP9QSZ1lqvXTfyzT,6SoXgLYqIDiR7Q4Npijwnp,4FC7GMnGwYeAjuvC83Srbs,1L9fzw2pXprOqtemTwtxXF,2V8KvnD5LVeeDChMWEkSzC,2dEVFDQ9Z9Gyl73yhoKl65,43GS3mtezoIFiuIZCLLiDY,7DFawVSjI88xR9mjnWwURg,16MQZkAIAAtI4X5NuiEwuq,0AUys3I9ow0KSaqew5esK7,29xIfQRoppDLV5x8TEMOXQ,2bCQHF9gdG5BNDVuEIEnNk
+
+
+-- delete from track where id in (select group_concat(id) from track where name like '%remaster%')
+delete from track_artist_join where track_id in (
+	select track.id from track
+	join track_album_join taj on taj.track_id = track.id
+	join album on taj.album_id = album.id
+	where track.name like '%remaster%' or album.name like '%remaster%'
+);
+
+delete from track_album_join where track_id in (
+	select track.id from track
+	join track_album_join taj on taj.track_id = track.id
+	join album on taj.album_id = album.id
+	where track.name like '%remaster%' or album.name like '%remaster%'
+);
+
+
+delete from track where track.id in (
+'7iN1s7xHE4ifF5povM6A48',
+'0wb21I1NV5uVUolRXIqlJF',
+'14vDlv40PzpXKBo6qmht6M',
+'7GqIDx2QVGOpd4r1fZaUUW',
+'1oht5GevPN9t1T3kG1m1GO',
+'6zV8IpLvw0tkRSVCFQJB1y',
+'3cq6mwsjgygbwRIi9wVPGv',
+'1Q1b8eVkUPGlpSArl8JAVw',
+'2XKW8CH8nRZH9cF2DNjBHN',
+'4OJFkrRQqol4FsPesF8eu4',
+'5uRkew0DtfAQmv0oEYNwFF',
+'0YveezON7jpiaHA8fnUHxN',
+'1PehfITh0TTRx3LkDdV4h3',
+'608xszaAxVh4m7NcKJiAbF',
+'5MLLuLqPdUlx8bfKtdkLwO',
+'7wJpqjqk8QbHpCakY1ZacY',
+'3KPwt1LBpt1jVSHz8GXERo',
+'75Nlnd9AJ4CYrLXgWGsuTF',
+'7GqWnsKhMtEW0nzki5o0d8',
+'5DEy8wVNCdJdAGNsOWxmVQ',
+'3AA2SafseoJo431Pee120g',
+'1oRvLqwJowH9JU0uO1iVzA',
+'3uiMBldZ07pW0ySHDX5gzE',
+'7tFiyTwD0nx5a1eklYtX2J',
+'2cWHN0WK52RGAWHgaDamUA',
+'4JRem7xHp2l0kmUvt9zCKu',
+'4fbwTO3DJ2qryMddov9RbB',
+'3tGhRLgcCP6SIZU3tbGl7l',
+'4OKf7CcYuw5H2HptkcKxcP',
+'62NJcC5piTuieIFiDZxiz1',
+'3XcjIvaZVUFAIdIYZqY9bd',
+'0VV8wkOM4w78A2OHZOTzNP',
+'72Z17vmmeQKAg8bptWvpVG',
+'5Wj1rJnCLpMHdLaxsFtJLs',
+'6yLIqXX9edg1x0HZS7cZEv',
+'4IRHwIZHzlHT1FQpRa5RdE',
+'6YLWRvxvC4VbFTuNRHeaDU',
+'5BCPL5mWm6UqI4atl18kVm',
+'6gTrbqZnyljwXdYQTyBkSx',
+'40riOy7x9W7GXjyGp4pjAv',
+'2TcwEYyydQuEMJwdmSgVLD',
+'36xEjbl8DtevPJgw6i9IuY',
+'0ofHAoxe9vBkTCp2UQIavz',
+'3CPeWqqaHR0hmyfsWhMJQs',
+'6cFZ4PLC19taNlpl9pbGMf',
+'4xh7W7tlNMIczFhupCPniY',
+'1TsekOo0xMKvIgKK7U6zaQ',
+'07NrCEN3egNvw8td2LxqJO',
+'5Vrczz39CvlD3OGCa6utoA',
+'3hJLKtTpgct9Y9wKww0BiR',
+'73JqQIGZUZxCVfY54RSpCH',
+'34D6mvDTAPypm92EPs8Rxa',
+'21IypW8aMJ2iUhzrXe3hKO',
+'7Kszjzps0xbQXyo1pO4KfE',
+'3w3rLh6wmne91BS2rwgcog',
+'2wYKNcoqKW4IEcllj42xz1',
+'6mHOcVtsHLMuesJkswc0GZ',
+'3fn87ydk7ihtvVr8EwjYvr',
+'71GMl3Q7U4JnrTqI9kfcoN',
+'7ooheiWgbyNtGOBTPbjNoq',
+'3OZ40egQbNWeTe0BnR2QKa',
+'4FLEKG82bHeT2olTM8E2Fy',
+'4RS9PmtHQe7I0o5fEeweOY',
+'35ItUJlMtjOQW3SSiTCrrw',
+'7v5rsCN3LhX9XaIlWyTdx3',
+'1QaJWSCk3UMKLotnPCIHh1',
+'3Ug96zKa29P3vICEEcYajZ',
+'2bzgKuK3pVez40qUvo8sYr',
+'5IATbFZds3cbOx8YxuMuko',
+'1RaUxP6LHVAgbmLOn2naLl',
+'02BsTeJE4q5gWOTt58ur5U',
+'2YOwVfcUTRjNpcLny4UC4r',
+'0v0XYK0pLgsPiq5u4FKHaw',
+'0iINibMKtoS8duvexsqnm5',
+'5y0YreEOnQiKFAnCrcFIXz',
+'0GGxVTb0UwDwdaKNjBdCn3',
+'3FD0RyHoYObYJkBIDGra4W',
+'3RJ81z1sPLeWEFuCfGaCLC',
+'66LhCsc06aTa2Ig7iYPDSP',
+'6IXSfTzUjEsKc9iOvDkIx4',
+'57JVGBtBLCfHw2muk5416J',
+'32fKHW6Eac4yBXn9WY7Aic',
+'52KvuGmgcgRdrLMXOtda0E',
+'4fKhRRYn7F5shZItjJkPJU',
+'07TnWCHrFkvF61GzJuLVt0',
+'1BZMMt9H0TheQGWQy44KmO',
+'3LMe4h7CrPLJrViTVzfDot',
+'4PFhHd7DsNg0ke9Nmlxms5',
+'01PjrDX13iIjeHc5iJZmb3',
+'4Wd9pEtEnZNDjgiswGOpJb',
+'1TfqLAPs4K3s2rJMoCokcS',
+'39lSeqnyjZJejRuaREfyLL',
+'3ix6K4wZY29bCujrSznwFZ',
+'6y9VZNRczyKeQihebHSMJ8',
+'4N1dFbXmRng8qJ3KdJrbLr',
+'0ZfZaT7NByalxa6bct5G67',
+'4YwbSZaYeYja8Umyt222Qf',
+'2QSUyofqpGDCo026OPiTBQ',
+'3ZXcjz3A5vNsR5dA1e6ITl',
+'56KqaFSGTb7ifpt16t5Y1N',
+'7HF88mJXq8DpotZohoW2mo',
+'5Ei9o2fHEnfHb84YrPuz4v',
+'6n4t5iMFjHmA3ErCOLT9O8',
+'173r99cYlRApif8GLPrLqt',
+'5x5FUXjs53WbPuTwT6WD8d',
+'63CHa6rmamv9OsehkRD8oz',
+'7N3PAbqfTjSEU1edb2tY8j',
+'2wSAWEYUHkt92X4SBAPqZE',
+'4sz1Ng2Cgidfqqiy0pNL6R',
+'78RIER8V6EhrqVPOBi2GYa',
+'3JpaL6FMH9kjVWMA1mTmRl',
+'3Tows9RnoAq9CmMJaII2cO',
+'6ucfemTqUh5NjU161g4LtV',
+'2zFdsAIk9r2Mi7Lmm1w3sM',
+'0SO4oJBmDNjniJwjlHaIhO',
+'7t6CAWplijBj4sdl0q3z0e',
+'56SnVQVuJuqnYA6rLdcg32',
+'31QuJZfFiMk1uOawow8ejS',
+'2DEEMhTiUMvkiHFdXkrKfI',
+'08rR0CdyUAzJy3053xCPPG',
+'74tXc7WOWxEDZahXcyPG9D',
+'1JLn8RhQzHz3qDqsChcmBl',
+'6fkvIT9KFKxO8poBeKfaEf',
+'0VMGij4wSGBM5pSTcqjxeD',
+'36lkJSDyMEZoWTqtRj8Q8q',
+'4qM461TqtpnP4GLRIXwEnW',
+'4N5HyZ1PlXuP6sryIa4hOQ',
+'2ZIzyHDYsXIHUojfr6bAbO',
+'1lJZSsMoWEbrgaY6CxPMf8',
+'3CCBwpqjdar1PG6HHulmD0',
+'3QyxB6fNUFNSLyjiwkycOY',
+'6UHXo9jMVXvLM5cNMaN0X2',
+'2yzPBlE5UXK2sqvnNM9QQ0',
+'1yg7fwwYmx9DQ2TdXUmfpJ',
+'4AUS8KNz7zX8XFu9L38GT0',
+'3gE2Af7Tgd1iZOO1xbTqoh',
+'0xpBr84T3FTm9j4D1MdPtk',
+'1dMilrhgON9TIGPVdWG2dX',
+'638poNnWFgzt7UJBQ5SWtM',
+'2s6wCS3vDZFPY9NOTlPXJZ',
+'1qOU8KzFifXE9YrgjVwYvc',
+'1NAf61L4b3jFgLJhThTQ8B',
+'6twIBPybEvGydyNzNz89FT',
+'2fytePz8UsbUr8n33QBEcm',
+'4P0uyibZjcXZLVeNOHBd8Q',
+'3dn6qXlHYAQpOqMTWxkGOR',
+'4CoSCPlKNrWli7E5kFtbcl',
+'5lWFrW5T3JtxVCLDb7etPu',
+'3qmYlsTbC9CD9SGoVmaEDa',
+'6IuOHB4yZcU935GKqT1K6I',
+'0hOA8SoraNo2ZP1amtVYnY',
+'0HEmnAUT8PHznIAAmVXqFJ',
+'3OeUlriM0EZHdWleJtjoVr',
+'5932kbyNt445gDTT2chRUS',
+'0IhUdJRoolbYeEMPL59XPm',
+'0PdM2a6oIjqepoEfcJo0RO',
+'1kiNatIrwDusOZfR29W0LJ',
+'5KXKhCfPNS4342ly8tTf6w',
+'0L0T4tMAaGqLgIVj1MOj9t',
+'3Dfy8YIxq89i84t108TvMi',
+'0sKlV58cODrjxGFOyf9IXY',
+'2nzPzkGP9QSZ1lqvXTfyzT',
+'6SoXgLYqIDiR7Q4Npijwnp',
+'4FC7GMnGwYeAjuvC83Srbs',
+'1L9fzw2pXprOqtemTwtxXF',
+'2V8KvnD5LVeeDChMWEkSzC',
+'2dEVFDQ9Z9Gyl73yhoKl65',
+'43GS3mtezoIFiuIZCLLiDY',
+'7DFawVSjI88xR9mjnWwURg',
+'16MQZkAIAAtI4X5NuiEwuq',
+'0AUys3I9ow0KSaqew5esK7',
+'29xIfQRoppDLV5x8TEMOXQ',
+'2bCQHF9gdG5BNDVuEIEnNk'
+)</sql><sql name="SQL 2">select track.id, track.name, album.release_date, json_extract(aa.analysis, '$.track.loudness') loudness from track
+join track_album_join on track_album_join.track_id = track.id
+join album on track_album_join.album_id = album.id
+join audio_analysis aa on aa.track_id = track.id
+order by loudness desc, release_date
+limit 100</sql><sql name="SQL 3">select track.id, track.name, artist.id, artist.name, album.id, album.name, album.release_date, album.release_date_precision from track
+join track_artist_join on track_artist_join.track_id = track.id
+join artist on track_artist_join.artist_id = artist.id
+join track_album_join on track_album_join.track_id = track.id
+join album on track_album_join.album_id = album.id
+where album.release_date like '2020%';
+
+-- select * from track
+-- join track_artist_join on track_artist_join.track_id = track.id
+-- join artist on track_artist_join.artist_id = artist.id
+-- -- left join track_album_join on track_album_join.track_id = track.id
+-- -- join album on track_album_join.album_id = album.id
+-- where track.name = 'Here We Are';
+-- 
+-- select * from track_album_join where track_id = '4asTNYhhrp323lLp81KIKQ'</sql><sql name="SQL 5">SELECT track.id id, track.name track_name, group_concat(artist.name, ', ') artist, album.name album, album.release_date, album.release_date_precision
+-- json_extract(aa.analysis, '$.track.loudness') loudness
+FROM TRACK
+JOIN track_artist_join ON track_artist_join.track_id = track.id
+JOIN artist ON track_artist_join.artist_id = artist.id
+JOIN track_album_join ON track_album_join.track_id = track.id
+JOIN album ON track_album_join.album_id = album.id
+JOIN audio_analysis aa ON aa.track_id = track.id
+WHERE TRUE
+	AND track.name NOT LIKE '%deluxe%'
+	AND album.name NOT LIKE '%deluxe%'
+	AND track.id NOT IN (
+		&quot;6iwctwVJDbq3WBJNWg3krI&quot;	-- What Have I Done to Deserve This by Pet Shop Boys - compilation
+	)
+GROUP BY track.id</sql><current_tab id="3"/></tab_sql></sqlb_project>
