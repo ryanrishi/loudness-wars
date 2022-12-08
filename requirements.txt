@@ -11,7 +11,7 @@ backports.shutil-get-terminal-size==1.0.0
 beautifulsoup4==4.9.3
 bleach==3.3.0
 blessed==1.17.6
-certifi==2018.10.15
+certifi==2022.12.7
 cffi==1.14.5
 chardet==3.0.4
 coloredlogs==14.0
